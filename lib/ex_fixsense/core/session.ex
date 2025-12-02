@@ -329,7 +329,7 @@ defmodule ExFixsense.Core.Session do
 
   @impl true
   def handle_info({:ssl_closed, _socket}, state) do
-    Logger.warning("[#{state.session_key}] Connection closed by server", [])
+    Logger.warn("[#{state.session_key}] Connection closed by server", [])
 
     # Notify handler
     invoke_handler(state, :on_logout, [
@@ -603,7 +603,7 @@ defmodule ExFixsense.Core.Session do
         cond do
           msg.seqnum > state.recv_seq_num ->
             # Sequence gap detected - notify user, let them decide what to do
-            Logger.warning("[#{state.session_key}] Sequence gap: expected #{state.recv_seq_num}, got #{msg.seqnum}", [])
+            Logger.warn("[#{state.session_key}] Sequence gap: expected #{state.recv_seq_num}, got #{msg.seqnum}", [])
             invoke_handler(state, :on_session_message, [state.session_key, msg, state.config])
             {:ok, state}  # Don't update recv_seq_num - user handles gap
 
@@ -728,7 +728,7 @@ defmodule ExFixsense.Core.Session do
       Logger.info("[#{state.session_key}] SequenceReset-GapFill: setting next expected to #{new_seq_no}")
       {:ok, %{state | recv_seq_num: new_seq_no}}
     else
-      Logger.warning("[#{state.session_key}] SequenceReset-HardReset: resetting sequence to #{new_seq_no}", [])
+      Logger.warn("[#{state.session_key}] SequenceReset-HardReset: resetting sequence to #{new_seq_no}", [])
       {:ok, %{state | recv_seq_num: new_seq_no}}
     end
   end

@@ -104,7 +104,7 @@ defmodule ExFixsense.Core.Config do
       sessions when is_list(sessions) ->
         case Keyword.get(sessions, session_key) do
           nil ->
-            Logger.warning("Session config not found: #{session_key}", [])
+            Logger.warn("Session config not found: #{session_key}", [])
             {:error, :session_not_found}
 
           config when is_list(config) ->
@@ -115,7 +115,7 @@ defmodule ExFixsense.Core.Config do
         end
 
       _ ->
-        Logger.warning("Invalid sessions config format", [])
+        Logger.warn("Invalid sessions config format", [])
         {:error, :session_not_found}
     end
   end
